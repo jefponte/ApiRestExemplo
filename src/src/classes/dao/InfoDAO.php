@@ -50,12 +50,17 @@ class InfoDAO extends DAO {
 			$temperaturaar = $info->getTemperaturaar();
 			$umidade = $info->getUmidade();
 			$datahora = $info->getDatahora();
+// 			$sql = "INSERT INTO info(temperaturasuperficie, temperaturaar, umidade, datahora)
+// 				VALUES($temperaturasuperficie, $temperaturaar, $umidade, '$datahora')";
+// 			echo $sql;
+			
+			
 		try {
 			$db = $this->getConexao();
 			$stmt = $db->prepare($sql);
-			$stmt->bindParam("temperaturasuperficie", $temperaturasuperficie, PDO::PARAM_INT);
-			$stmt->bindParam("temperaturaar", $temperaturaar, PDO::PARAM_INT);
-			$stmt->bindParam("umidade", $umidade, PDO::PARAM_INT);
+			$stmt->bindParam("temperaturasuperficie", $temperaturasuperficie, PDO::PARAM_STR);
+			$stmt->bindParam("temperaturaar", $temperaturaar, PDO::PARAM_STR);
+			$stmt->bindParam("umidade", $umidade, PDO::PARAM_STR);
 			$stmt->bindParam("datahora", $datahora, PDO::PARAM_STR);
 			return $stmt->execute();
 		} catch(PDOException $e) {

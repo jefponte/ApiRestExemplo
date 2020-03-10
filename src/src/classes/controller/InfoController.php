@@ -89,6 +89,26 @@ class InfoController {
 		}
         echo '<META HTTP-EQUIV="REFRESH" CONTENT="0; URL=index.php?pagina=info">';
 	}
+	public function cadastrarApiGET() {
+	    
+	    
+	    if (! ( isset ( $_GET ['temperaturasuperficie'] ) && isset ( $_GET ['temperaturaar'] ) && isset ( $_GET ['umidade'] ) && isset ( $_GET ['datahora'] ))) {
+	        echo "Fracasso";
+	        return;
+	    }
+	    
+	    $info = new Info ();
+	    $info->setTemperaturasuperficie ($_GET ['temperaturasuperficie'] );
+	    $info->setTemperaturaar ( $_GET ['temperaturaar'] );
+	    $info->setUmidade ( $_GET ['umidade'] );
+	    $info->setDatahora ( $_GET ['datahora'] );
+	    if ($this->dao->inserir ( $info ))
+	    {
+	        echo "Sucesso";
+	    } else {
+	        echo "Fracasso";
+	    }
+	}
     public function editar(){
 	    if(!isset($_GET['editar'])){
 	        return;
