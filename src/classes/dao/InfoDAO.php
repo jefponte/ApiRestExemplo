@@ -50,9 +50,7 @@ class InfoDAO extends DAO {
 			$temperaturaar = $info->getTemperaturaar();
 			$umidade = $info->getUmidade();
 			$datahora = $info->getDatahora();
-// 			$sql = "INSERT INTO info(temperaturasuperficie, temperaturaar, umidade, datahora)
-// 				VALUES($temperaturasuperficie, $temperaturaar, $umidade, '$datahora')";
-// 			echo $sql;
+
 			
 			
 		try {
@@ -112,6 +110,7 @@ class InfoDAO extends DAO {
     public function pesquisaPorId(Info $info) {
         $lista = array();
 	    $id = $info->getId();
+	    
 	    $sql = "SELECT 
                 info.id, 
                 info.temperaturasuperficie, 
@@ -123,15 +122,15 @@ class InfoDAO extends DAO {
 	    $result = $this->getConexao ()->query ( $sql );
                     
 	    foreach ( $result as $linha ) {
-            $info = new Info();
 	        $info->setId( $linha ['id'] );
 	        $info->setTemperaturasuperficie( $linha ['temperaturasuperficie'] );
 	        $info->setTemperaturaar( $linha ['temperaturaar'] );
 	        $info->setUmidade( $linha ['umidade'] );
 	        $info->setDatahora( $linha ['datahora'] );
-			$lista [] = $info;
+			return $info;
 		}
-		return $lista;
+		return null;
+		
     }
                     
     public function pesquisaPorTemperaturasuperficie(Info $info) {
