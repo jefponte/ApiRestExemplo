@@ -35,6 +35,11 @@ class InfoController {
         echo '</div>';
             
     }
+    public static function mainREST(){
+        $controller = new InfoController();
+        $controller->listarJSON();
+        $controller->cadastrarPOST();
+    }
 	public function __construct(){
 		$this->dao = new InfoDAO();
 		$this->view = new InfoView();
@@ -162,6 +167,37 @@ class InfoController {
     }
 	public function listarJSON()
     {
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method != 'GET') {
+            return;
+        }
+        if (! array_key_exists('path', $_GET)) {
+            echo 'Error. Path missing.';
+            return;
+        }
+        
+        $path = explode('/', $_GET['path']);
+        
+        if (count($path) == 0 || $path[0] == "") {
+            echo 'Error. Path missing.';
+            return;
+        }
+        
+        $param1 = "";
+        if (count($path) > 1) {
+            $param1 = $path[1];
+        }
+        
+        header('Content-type: application/json');
+        $body = file_get_contents('php://input');
+        
+        
+        if ($path[0] != 'info') {
+            return;
+        }
+    
+        
+        
 		$infoDao = new InfoDAO ();
 		$lista = $infoDao->retornaLista ();
 		$listagem = array ();
@@ -178,7 +214,54 @@ class InfoController {
 		}
 		echo json_encode ( $listagem );
 	}
-            
+
+	public function cadastrarPOST(){
+	    $method = $_SERVER['REQUEST_METHOD'];
+	    if ($method != 'POST') {
+	        return;
+	    }
+	    if (! array_key_exists('path', $_GET)) {
+	        echo 'Error. Path missing.';
+	        return;
+	    }
+	    
+	    $path = explode('/', $_GET['path']);
+	    
+	    if (count($path) == 0 || $path[0] == "") {
+	        echo 'Error. Path missing.';
+	        return;
+	    }
+	    
+	    $param1 = "";
+	    if (count($path) > 1) {
+	        $param1 = $path[1];
+	    }
+	    
+	    
+	    header('Content-type: application/json');
+	    $body = file_get_contents('php://input');
+	    
+        $jsonBody = json_decode($body, true);
+
+        
+        if (! ( isset ( $jsonBody ['temperaturasuperficie'] ) && isset ( $jsonBody ['temperaturaar'] ) && isset ( $jsonBody ['umidade'] ) && isset ( $jsonBody ['datahora'] ))) {
+            echo "Incompleto.";
+            return;
+        }
+        
+        $info = new Info ();
+        $info->setTemperaturasuperficie ($jsonBody ['temperaturasuperficie'] );
+        $info->setTemperaturaar ( $jsonBody ['temperaturaar'] );
+        $info->setUmidade ( $jsonBody ['umidade'] );
+        $info->setDatahora ( $jsonBody ['datahora'] );
+        if ($this->dao->inserir ( $info ))
+        {
+            echo "Sucesso";
+        } else {
+            echo "Fracasso";
+        }
+       
+	}
             
 		
 }
