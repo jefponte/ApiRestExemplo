@@ -40,15 +40,31 @@ class InfoController
         echo '</div>';
     }
 
+    
     public static function mainREST()
     {
-        header('Content-type: application/json');
-        $controller = new InfoController();
-        $controller->restGET();
-        $controller->restPOST();
-        $controller->restPUT();
-        $controller->resDELETE();
-        $controller->cadastrarApiGET();
+        if(!isset($_SERVER['PHP_AUTH_USER'])){
+            header("WWW-Authenticate: Basic realm=\"Private Area\" ");
+            header("HTTP`/1.0 401 Unauthorized");
+            echo "Desculpe, você se autenticar";
+            return;
+        }
+        if($_SERVER['PHP_AUTH_USER'] == 'jefponte' && ($_SERVER['PHP_AUTH_PW'] == '1234')){
+            header('Content-type: application/json');
+            $controller = new InfoController();
+            $controller->restGET();
+            $controller->restPOST();
+            $controller->restPUT();
+            $controller->resDELETE();
+            $controller->cadastrarApiGET();
+            
+        }else{
+            header("WWW-Authenticate: Basic realm=\"Private Area\" ");
+            header("HTTP`/1.0 401 Unauthorized");
+            echo "Errou.";
+        }
+        
+
         
     }
 
@@ -365,11 +381,6 @@ class InfoController
         if (count($path) == 0 || $path[0] == "") {
             echo 'Error. Path missing.';
             return;
-        }
-
-        $param1 = "";
-        if (count($path) > 1) {
-            $param1 = $path[1];
         }
 
         $body = file_get_contents('php://input');
