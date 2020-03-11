@@ -167,8 +167,7 @@ class InfoController {
     }
 	public function listarJSON()
     {
-        $method = $_SERVER['REQUEST_METHOD'];
-        if ($method != 'GET') {
+        if ($_SERVER['REQUEST_METHOD'] != 'GET') {
             return;
         }
         if (! array_key_exists('path', $_GET)) {
@@ -188,14 +187,12 @@ class InfoController {
             $param1 = $path[1];
         }
         
-        header('Content-type: application/json');
-        $body = file_get_contents('php://input');
-        
-        
         if ($path[0] != 'info') {
             return;
         }
-    
+        
+        header('Content-type: application/json');
+        $body = file_get_contents('php://input');
         
         
 		$infoDao = new InfoDAO ();
@@ -215,9 +212,73 @@ class InfoController {
 		echo json_encode ( $listagem );
 	}
 
+	public function resDELETE(){
+	    if($_SERVER['REQUEST_METHOD'] != 'DELETE'){
+	        return;
+	    }
+        if($json[$path[0]]){
+            if($param1==""){
+                echo 'error';
+            }else{
+                $encontrado = findById($json[$path[0]], $param1);
+                if($encontrado>=0){
+                    echo json_encode($json[$path[0]][$encontrado]);
+                    unset($json[$path[0]][$encontrado]);
+                    file_put_contents('db.json', json_encode($json));
+                }else{
+                    echo 'ERROR.';
+                    exit;
+                }
+            }
+        }else{
+            echo 'error.';
+        }
+	    
+	    
+	}
+	public function restPUT(){
+	    if($_SERVER['REQUEST_METHOD'] != 'PUT'){
+            return;   
+	    }
+	    if (! array_key_exists('path', $_GET)) {
+	        echo 'Error. Path missing.';
+	        return;
+	    }
+	    
+        if($json[$path[0]]){
+            if($param1==""){
+                echo 'error';
+            }else{
+                $encontrado = findById($json[$path[0]], $param1);
+                if($encontrado>=0){
+                    $jsonBody = json_decode($body, true);
+                    $jsonBody['id'] = $param1;
+                    $json[$path[0]][$encontrado] = $jsonBody;
+                    echo json_encode($json[$path[0]][$encontrado]);
+                    file_put_contents('db.json', json_encode($json));
+                }else{
+                    echo 'ERROR.';
+                    exit;
+                }
+            }
+        }else{
+            echo 'error.';
+        }
+	    
+	}
+	/**
+	 *
+	 * Passar um post dessa forma: 
+        {
+            "temperaturasuperficie": "24",
+            "temperaturaar": "25",
+            "umidade": "10",
+            "datahora": "100"
+        }
+ 
+	 */
 	public function cadastrarPOST(){
-	    $method = $_SERVER['REQUEST_METHOD'];
-	    if ($method != 'POST') {
+	    if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 	        return;
 	    }
 	    if (! array_key_exists('path', $_GET)) {
