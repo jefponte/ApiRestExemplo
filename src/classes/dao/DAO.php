@@ -2,7 +2,7 @@
                 
                 
 class DAO {
-	const ARQUIVO_CONFIGURACAO = "../../apirestexemplo_bd.ini";
+	const ARQUIVO_CONFIGURACAO = "../apirestexemplo_bd.ini";
 	    
 	protected $conexao;
 	private $tipoDeConexao;
