@@ -49,7 +49,7 @@ class InfoController
             echo "Desculpe, você se autenticar";
             return;
         }
-        if($_SERVER['PHP_AUTH_USER'] == 'jefponte' && ($_SERVER['PHP_AUTH_PW'] == '1234')){
+        if($_SERVER['PHP_AUTH_USER'] == 'unilab' && ($_SERVER['PHP_AUTH_PW'] == '2020')){
             header('Content-type: application/json');
             $controller = new InfoController();
             $controller->restGET();
