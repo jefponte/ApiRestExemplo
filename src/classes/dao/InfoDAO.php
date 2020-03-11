@@ -108,7 +108,7 @@ class InfoDAO extends DAO {
 	}
                     
     public function pesquisaPorId(Info $info) {
-        $lista = array();
+        
 	    $id = $info->getId();
 	    
 	    $sql = "SELECT 
