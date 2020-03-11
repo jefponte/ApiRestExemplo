@@ -48,6 +48,7 @@ class InfoController
         $controller->restPOST();
         $controller->restPUT();
         $controller->resDELETE();
+        $controller->cadastrarApiGET();
         
     }
 
@@ -107,24 +108,6 @@ class InfoController
         echo '<META HTTP-EQUIV="REFRESH" CONTENT="0; URL=index.php?pagina=info">';
     }
 
-    public function cadastrarApiGET()
-    {
-        if (! (isset($_GET['temperaturasuperficie']) && isset($_GET['temperaturaar']) && isset($_GET['umidade']) && isset($_GET['datahora']))) {
-            echo "Fracasso";
-            return;
-        }
-
-        $info = new Info();
-        $info->setTemperaturasuperficie($_GET['temperaturasuperficie']);
-        $info->setTemperaturaar($_GET['temperaturaar']);
-        $info->setUmidade($_GET['umidade']);
-        $info->setDatahora($_GET['datahora']);
-        if ($this->dao->inserir($info)) {
-            echo "Sucesso";
-        } else {
-            echo "Fracasso";
-        }
-    }
 
     public function editar()
     {
@@ -178,7 +161,24 @@ class InfoController
         }
         echo '<META HTTP-EQUIV="REFRESH" CONTENT="0; URL=index.php?pagina=info">';
     }
-
+    public function cadastrarApiGET()
+    {
+        if (! (isset($_GET['temperaturasuperficie']) && isset($_GET['temperaturaar']) && isset($_GET['umidade']) && isset($_GET['datahora']))) {
+            return;
+        }
+        
+        $info = new Info();
+        $info->setTemperaturasuperficie($_GET['temperaturasuperficie']);
+        $info->setTemperaturaar($_GET['temperaturaar']);
+        $info->setUmidade($_GET['umidade']);
+        $info->setDatahora($_GET['datahora']);
+        if ($this->dao->inserir($info)) {
+            echo "Sucesso";
+        } else {
+            echo "Fracasso";
+        }
+    }
+    
     public function restGET()
     {
         if ($_SERVER['REQUEST_METHOD'] != 'GET') {
@@ -313,8 +313,8 @@ class InfoController
         $id = intval($param1);
         $info = new Info();
         $info->setId($id);
-        $encontrado = $this->dao->pesquisaPorId($info);
-        if ($encontrado == null) {
+        $info = $this->dao->pesquisaPorId($info);
+        if ($info == null) {
             return;
         }
 
@@ -322,18 +322,19 @@ class InfoController
         $jsonBody = json_decode($body, true);
 
         if (isset($jsonBody['temperaturasuperficie'])) {
-            $encontrado->setTemperaturasuperficie($jsonBody['temperaturasuperficie']);
+            $info->setTemperaturasuperficie($jsonBody['temperaturasuperficie']);
         }
         if (isset($jsonBody['temperaturaar'])) {
-            $encontrado->setTemperaturaar($jsonBody['temperaturaar']);
+            $info->setTemperaturaar($jsonBody['temperaturaar']);
         }
         if (isset($jsonBody['umidade'])) {
-            $encontrado->setUmidade($jsonBody['umidade']);
+            $info->setUmidade($jsonBody['umidade']);
         }
         if (isset($jsonBody['datahora'])) {
-            $encontrado->setDatahora($jsonBody['datahora']);
+            $info->setDatahora($jsonBody['datahora']);
         }
-        if ($this->dao->atualizar($encontrado)) {
+        if ($this->dao->atualizar($info)) {
+            
             echo "Sucesso";
         } else {
             echo "Erro";
