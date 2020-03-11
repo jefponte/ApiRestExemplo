@@ -196,31 +196,30 @@ class InfoController
     }
     
     public function restGET()
-    {
+    {   
         if ($_SERVER['REQUEST_METHOD'] != 'GET') {
             return;
         }
-        if (! array_key_exists('path', $_GET)) {
-            echo 'Error. Path missing.';
+
+        if(!isset($_REQUEST['path'])){
             return;
         }
+        $url = explode("/", $_REQUEST['path']);
+        
 
-        $path = explode('/', $_GET['path']);
-
-        if (count($path) == 0 || $path[0] == "") {
-            echo 'Error. Path missing.';
+        if (count($url) == 0 || $url[0] == "") {
+            echo 'Error. Path missing2.';
             return;
         }
-        if ($path[0] != 'info') {
+        if ($url[0] != 'info') {
             echo "Erro";
             return;
         }
 
         $param1 = "";
-        if (count($path) > 1) {
-            $param1 = $path[1];
+        if (count($url) > 1) {
+            $param1 = $url[1];
         }
-
         if ($param1 != "") {
             $id = intval($param1);
             $info = new Info();

@@ -18,6 +18,12 @@ function __autoload($classe) {
 		include_once 'classes/view/' . $classe . '.php';
 	}
 }
+
+if(isset($_REQUEST['path'])){
+    InfoController::mainREST();
+    exit;
+}
+
         
 ?>
         
