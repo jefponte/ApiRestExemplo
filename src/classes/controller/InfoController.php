@@ -46,7 +46,7 @@ class InfoController
         if(!isset($_SERVER['PHP_AUTH_USER'])){
             header("WWW-Authenticate: Basic realm=\"Private Area\" ");
             header("HTTP`/1.0 401 Unauthorized");
-            echo "Desculpe, você se autenticar";
+            echo '{"erro":[{"status":"error","message":"Authentication failed"}]}';
             return;
         }
         if($_SERVER['PHP_AUTH_USER'] == 'unilab' && ($_SERVER['PHP_AUTH_PW'] == '2020')){
@@ -61,7 +61,7 @@ class InfoController
         }else{
             header("WWW-Authenticate: Basic realm=\"Private Area\" ");
             header("HTTP`/1.0 401 Unauthorized");
-            echo "Errou.";
+            echo '{"erro":[{"status":"error","message":"Authentication failed"}]}';
         }
         
 
