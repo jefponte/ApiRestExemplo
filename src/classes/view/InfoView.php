@@ -80,7 +80,7 @@ class InfoView {
 						<th>temperaturasuperficie</th>
 						<th>temperaturaar</th>
 						<th>umidade</th>
-                        <th>Ações</th>
+                        <th>Data e Hora</th>
 					</tr>
 				</thead>
 				<tfoot>
