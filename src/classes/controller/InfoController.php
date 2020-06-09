@@ -25,18 +25,10 @@ class InfoController
         }
         echo '
 		<div class="row justify-content-center">';
-        echo '<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">';
+        echo '<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">';
         $controller->listar();
         echo '</div>';
-        echo '<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">';
-        if (isset($_GET['editar'])) {
-            $controller->editar();
-        } else if (isset($_GET['deletar'])) {
-            $controller->deletar();
-        } else {
-            $controller->cadastrar();
-        }
-        echo '</div>';
+ 
         echo '</div>';
     }
 
@@ -102,7 +94,7 @@ class InfoController
     public function cadastrar()
     {
         if (! isset($this->post['enviar_info'])) {
-            $this->view->mostraFormInserir();
+//             $this->view->mostraFormInserir();
             return;
         }
         if (! (isset($this->post['temperaturasuperficie']) && isset($this->post['temperaturaar']) && isset($this->post['umidade']) && isset($this->post['datahora']))) {
