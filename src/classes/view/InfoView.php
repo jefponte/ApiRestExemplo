@@ -89,7 +89,7 @@ class InfoView {
                         <th>temperaturasuperficie</th>
                         <th>temperaturaar</th>
                         <th>umidade</th>
-                        <th>Ações</th>
+                        <th>Data e Hora</th>
 					</tr>
 				</tfoot>
 				<tbody>';
@@ -100,11 +100,7 @@ class InfoView {
                 echo '<td>'.$elemento->getTemperaturasuperficie().'</td>';
                 echo '<td>'.$elemento->getTemperaturaar().'</td>';
                 echo '<td>'.$elemento->getUmidade().'</td>';
-                echo '<td>
-                        <a href="?pagina=info&selecionar='.$elemento->getId().'" class="btn btn-info">Selecionar</a>
-                        <a href="?pagina=info&editar='.$elemento->getId().'" class="btn btn-success">Editar</a>
-                        <a href="?pagina=info&deletar='.$elemento->getId().'" class="btn btn-danger">Deletar</a>
-                      </td>';
+                echo '<td>'.$elemento->getDatahora().'</td>';
                 echo '</tr>';
             }
             
